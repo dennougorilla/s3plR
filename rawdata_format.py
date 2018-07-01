@@ -14,16 +14,18 @@ def lambda_handler(event, context):
     colss_li.remove(2)
     colss_li.remove(7)
     #}}}
-
-    day = file_name[37:45] #day string
-
+    
+    
     bucket_name = 'ld-rawdata'
     file_name = 'TR_JISSEKI/20161115XXXXXX/TR_JISSEKI_20161115232207.csv'#TODO
-    df = pd.read_csv('s3n://'+bucket_name+'/'+file_name,
+    day = file_name[37:45] #day string
+    reader = pd.read_csv('s3n://'+bucket_name+'/'+file_name,
             encoding="cp932", 
             header=None, 
             #nrows=10, 
+            chunksize=50,
             usecols=colss_li)
+    df = pd.concat((r for r in reader), ignore_index=True)
     
     
     li = []
