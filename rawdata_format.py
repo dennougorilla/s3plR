@@ -48,3 +48,5 @@ def lambda_handler(event, context):
             li[i][10] = li[i][10] - li[i-1][10]
     
     df3 = pd.concat(li) #concat li. df3 is final dataframe
+    df3 = df3[[0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17]]
+    df3.columns = ['data_ymdh', 'ten_cd', 'sku_cd', 'dpt_cd', 'line_cd', 'class_cd', 'sku_name', 'urisu', 'urikin', 'gsagsu1', 'gsaggk1', 'gsagsu2', 'gsaggk2', 'gsagsu3', 'gsaggk3', 'garari']
