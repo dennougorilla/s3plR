@@ -6,6 +6,10 @@
 import boto3
 import pandas as pd
 from tqdm import tqdm
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from datetime import datetime, date, timedelta
 #}}}
 
 s3 = boto3.client('s3')
@@ -33,24 +37,28 @@ df = pd.concat((r for r in tqdm(reader)), ignore_index=True)
 
 li = []
 df = df[df[0].isin([day])]
-starth = 7
+hour = 7
 base = df.loc[:, 0:10]
 
 #Make hours list
 for i in tqdm(range(19)):
-    base.loc[:, 0] = day + '{0:02d}'.format(starth)
-    starth+=1
+    if hour < 24:
+        base.loc[:, 0] = pd.datetime(int(day[0:4]),int(day[4:6]),int(day[6:8]), hour)
+    elif hour > 23:
+        base.loc[:, 0] = pd.datetime(int(day[0:4]),int(day[4:6]),int(day[6:8]), hour-24)+timedelta(days=1)
+        
+    hour+=1
     li.append(pd.concat([base, df.loc[:, 21+i*10:30+i*10]], axis=1))
 
 #set columns
 for i in tqdm(range(len(li))):
     li[i].columns = [j for j in range(19)]
 
-#difference
-for i in tqdm(reversed(range(len(li)))):
-    if i != 0:
-        li[i][9] = li[i][9] - li[i-1][9]
-        li[i][10] = li[i][10] - li[i-1][10]
+##difference
+#for i in tqdm(reversed(range(len(li)))):
+#    if i != 0:
+#        li[i][9] = li[i][9] - li[i-1][9]
+#        li[i][10] = li[i][10] - li[i-1][10]
 
 df3 = pd.concat(li) #concat li. df3 is final dataframe
 df3 = df3[[0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17]]
