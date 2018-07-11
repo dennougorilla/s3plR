@@ -6,16 +6,11 @@
 import boto3
 import pandas as pd
 from tqdm import tqdm
-<<<<<<< HEAD
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime, date, timedelta
-=======
-import os
 import pandas_redshift as pr
-
->>>>>>> 2dc71c8b4edbec3373c9b9bc9f781ba005e0c469
 #}}}
 
 s3 = boto3.client('s3')
@@ -85,8 +80,7 @@ pr.connect_to_redshift(dbname = dbname,
 pr.connect_to_s3(aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID'),
                 aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY'),
                 bucket = 'nichiji-tmp'
-                )
-
+                ) 
 pr.pandas_to_redshift(data_frame = df3,
                         redshift_table_name = 'jisseki_nichiji',
                         append = True)

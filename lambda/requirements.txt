@@ -1,0 +1,6 @@
+boto3
+pandas
+tqdm
+datetime
+timedelta
+pandas_redshift
